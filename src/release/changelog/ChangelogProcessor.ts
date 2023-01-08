@@ -1,9 +1,9 @@
-import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
+import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Inject, Logger } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Job } from 'bullmq';
 import { Database } from 'src/types/supabase';
-import { ChangelogQueueData } from './typedef';
+import { ChangelogQueueData } from './changelog.typedef';
 
 @Processor('changelog')
 export class ChangelogProcessor extends WorkerHost {

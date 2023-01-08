@@ -1,9 +1,11 @@
 import { BullModule } from '@nestjs/bullmq';
-import { Module, Scope } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { createClient } from '@supabase/supabase-js';
 import { HealthController } from './app.controller';
+import { BlogeModule } from './blog/blog.module';
 import { ReleaseModule } from './release/release.module';
+import { TopicModule } from './topic/topic.module';
+import { TweetModule } from './tweet/tweet.module';
 
 @Module({
   imports: [
@@ -15,9 +17,16 @@ import { ReleaseModule } from './release/release.module';
           host: configService.get('REDIS_HOST'),
           port: Number(configService.get('REDIS_PORT')),
         },
+        defaultJobOptions: {
+          removeOnComplete: true,
+          removeOnFail: 3600,
+        },
       }),
     }),
+    TopicModule,
     ReleaseModule,
+    BlogeModule,
+    TweetModule,
   ],
   controllers: [HealthController],
 })

@@ -2,8 +2,19 @@ import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SupabaseModule } from 'src/supabase.module';
-import { ChangelogJobScheduler } from './ChangelogJobScheduler';
-import { ChangelogProcessor } from './ChangelogProcessor';
+import { TopicModule } from 'src/topic/topic.module';
+import { ChangelogJobScheduler } from './changelog/ChangelogJobScheduler';
+import { ChangelogProcessor } from './changelog/ChangelogProcessor';
+import { ChangelogSanitizer } from './changelog/sanitizer/changelogSanitizer';
+import { MarkdownSanitizer } from './changelog/sanitizer/MarkdownSanitizer';
+import { ChangelogScrapingService } from './changelog/scraper/changelogScrapingService';
+import { GithubReleaseChangelogScraper } from './changelog/scraper/GithubReleaseChangelogScraper';
+import { MarkdownFileChangelogScraper } from './changelog/scraper/MarkdownFileChangelogScraper';
+import { ReleaseFetcherGithub } from './ReleaseFetcherGithub';
+import { ReleaseFetcherNpm } from './ReleaseFetcherNpm';
+import { ReleaseJobScheduler as ReleaseJobScheduler } from './ReleaseJobScheduler';
+import { ReleaseProcessor } from './ReleaseProcessor';
+import { ReleaseWriter } from './ReleaseWriter';
 
 @Module({
   imports: [
@@ -11,9 +22,36 @@ import { ChangelogProcessor } from './ChangelogProcessor';
     BullModule.registerQueue({
       name: 'changelog',
     }),
+    BullModule.registerQueue({
+      name: 'release',
+    }),
     SupabaseModule,
+    TopicModule,
   ],
 
-  providers: [ChangelogProcessor, ChangelogJobScheduler],
+  providers: [
+    ReleaseWriter,
+    ReleaseJobScheduler,
+    ReleaseProcessor,
+    ReleaseFetcherGithub,
+    ReleaseFetcherNpm,
+    MarkdownSanitizer,
+    ChangelogSanitizer,
+    ChangelogProcessor,
+    ChangelogJobScheduler,
+    GithubReleaseChangelogScraper,
+    MarkdownFileChangelogScraper,
+    {
+      provide: 'releaseFetchers',
+      useFactory: (github, npm) => [github, npm],
+      inject: [ReleaseFetcherGithub, ReleaseFetcherNpm],
+    },
+    {
+      provide: 'changelogScrapers',
+      useFactory: (githubRelease, markdownFile) => [githubRelease, markdownFile],
+      inject: [GithubReleaseChangelogScraper, MarkdownFileChangelogScraper],
+    },
+    ChangelogScrapingService,
+  ],
 })
 export class ReleaseModule {}

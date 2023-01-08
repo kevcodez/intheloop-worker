@@ -4,7 +4,7 @@ import { Cron } from '@nestjs/schedule';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Queue } from 'bullmq';
 import { Database } from 'src/types/supabase';
-import { ChangelogQueueData } from './typedef';
+import { ChangelogQueueData } from './changelog.typedef';
 
 @Injectable()
 export class ChangelogJobScheduler {
@@ -15,7 +15,7 @@ export class ChangelogJobScheduler {
     @Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>,
   ) {}
 
-  @Cron('*/30 * * * * *')
+  @Cron('*/60 * * * * *')
   async handleCron() {
     // Get releases without release notes
     const { data } = await this.supabaseClient
@@ -37,10 +37,6 @@ export class ChangelogJobScheduler {
           topicId: release.topic,
         },
         name: 'changelog_job',
-        opts: {
-          removeOnComplete: true,
-          removeOnFail: 3600,
-        },
       })),
     );
   }

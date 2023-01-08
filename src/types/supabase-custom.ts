@@ -1,18 +1,79 @@
+import { Json } from './supabase';
+
+export type ReleaseStrategy = 'npm' | 'github';
+
 export type ScrapeSettingsReleases = {
-  via: 'npm';
+  via: ReleaseStrategy;
   meta: {
     repo: string;
     owner: string;
-    packageœ: string;
+    package: string;
   };
 };
 
+export type TweetPopularitySettings = { minLikes: number; minReplies: number };
+export type TweetSearch = { query: string };
+
 export type ScrapeSettingsTweets = {
-  popular: {
-    minLikes: number;
-    minReplies: number;
-  };
-  searches: {
-    query: string;
-  }[];
+  popular: TweetPopularitySettings;
+  searches: TweetSearch[];
 };
+
+export type ChangelogScrapingStrategy = 'github_release' | 'markdown_file';
+
+export interface ScrapeSettingsTweetsChangelogs {
+  strategy: ChangelogScrapingStrategy;
+  meta: {
+    markdownFile?: string;
+    githubOwner?: string;
+    githubRepo?: string;
+  };
+}
+
+export type Release = {
+  id: string;
+  name: string;
+  topic: string;
+  published_at: string;
+  version: string;
+  info: ReleaseInfo;
+};
+
+export type ReleaseInfo = {
+  version: string;
+  releaseNotesUrl?: string;
+} & Json;
+
+export type Topic = {
+  id: string;
+  info: TopicInfo;
+};
+
+export type TopicInfo = {
+  latestVersion?: string;
+} & Json;
+
+export type Blog = {
+  id: string;
+  topics: string[];
+};
+
+export type BlogPost = {
+  id: string;
+  blog_id: string;
+  info: BlogPostInfo;
+  topics: string[];
+  language: string;
+  published_at: string;
+};
+
+export type BlogPostInfo = {
+  guid: string;
+  link: string;
+  image?: string;
+  summary: string;
+  title: string;
+  writtenBy: string;
+  publishedAt: string;
+  categories: string[];
+} & Json;

@@ -1,3 +1,5 @@
+import { BlogPostInfo, ReleaseInfo } from "./supabase-custom";
+
 export type Json =
   | string
   | number
@@ -30,7 +32,7 @@ export interface Database {
         Row: {
           id: number;
           blog_id: string | null;
-          info: Json;
+          info: BlogPostInfo;
           topics: string[];
           language: string | null;
           published_at: string | null;
@@ -38,7 +40,7 @@ export interface Database {
         Insert: {
           id?: number;
           blog_id?: string | null;
-          info: Json;
+          info: BlogPostInfo;
           topics?: string[];
           language?: string | null;
           published_at?: string | null;
@@ -46,7 +48,7 @@ export interface Database {
         Update: {
           id?: number;
           blog_id?: string | null;
-          info?: Json;
+          info?: BlogPostInfo;
           topics?: string[];
           language?: string | null;
           published_at?: string | null;
@@ -166,19 +168,19 @@ export interface Database {
         Row: {
           id: number;
           topic: string | null;
-          info: Json | null;
+          info: ReleaseInfo | null;
           published_at: string | null;
         };
         Insert: {
           id?: number;
           topic?: string | null;
-          info?: Json | null;
+          info?: ReleaseInfo | null;
           published_at?: string | null;
         };
         Update: {
           id?: number;
           topic?: string | null;
-          info?: Json | null;
+          info?: ReleaseInfo | null;
           published_at?: string | null;
         };
       };
