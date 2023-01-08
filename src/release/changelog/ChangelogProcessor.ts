@@ -7,9 +7,7 @@ import { ChangelogQueueData } from './changelog.typedef';
 
 @Processor('changelog')
 export class ChangelogProcessor extends WorkerHost {
-  constructor(
-    @Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>,
-  ) {
+  constructor(@Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>) {
     super();
   }
 
@@ -18,11 +16,7 @@ export class ChangelogProcessor extends WorkerHost {
   async process(job: Job<ChangelogQueueData, any, string>): Promise<any> {
     const releaseId = job.data.releaseId;
 
-    const { data: release } = await this.supabaseClient
-      .from('release')
-      .select(`info`)
-      .eq('id', releaseId)
-      .single();
+    const { data: release } = await this.supabaseClient.from('release').select(`info`).eq('id', releaseId).single();
 
     // do some stuff
   }

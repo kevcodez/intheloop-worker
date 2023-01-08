@@ -1,14 +1,9 @@
-import {
-  ScrapeSettingsReleases,
-  ReleaseStrategy,
-} from 'src/types/supabase-custom';
+import { ScrapeSettingsReleases, ReleaseStrategy } from 'src/types/supabase-custom';
 import { FetchedRelease, ReleaseFetcher } from './release.typedef';
 import npmFetch from 'npm-registry-fetch';
 
 export class ReleaseFetcherNpm implements ReleaseFetcher {
-  async fetch(
-    scrapeSettings: ScrapeSettingsReleases,
-  ): Promise<{ releases: FetchedRelease[]; latestRelease?: string }> {
+  async fetch(scrapeSettings: ScrapeSettingsReleases): Promise<{ releases: FetchedRelease[]; latestRelease?: string }> {
     const npmData = await npmFetch.json('/' + scrapeSettings.meta.package);
 
     const termsToIgnore = ['0.0.0', 'canary', 'dev', 'insider'];
@@ -16,9 +11,7 @@ export class ReleaseFetcherNpm implements ReleaseFetcher {
     const releasesFromNpm: FetchedRelease[] = Object.keys(npmData.versions)
       .filter((it) => !termsToIgnore.some((ignore) => it.includes(ignore)))
       .map((version) => {
-        const versionDetails: Record<string, string> = (
-          npmData.versions as any
-        )[version];
+        const versionDetails: Record<string, string> = (npmData.versions as any)[version];
 
         return {
           name: versionDetails.name,
@@ -30,9 +23,7 @@ export class ReleaseFetcherNpm implements ReleaseFetcher {
         };
       });
 
-    const timeKeys = Object.keys(npmData.time).filter(
-      (it) => !termsToIgnore.some((ignore) => it.includes(ignore)),
-    );
+    const timeKeys = Object.keys(npmData.time).filter((it) => !termsToIgnore.some((ignore) => it.includes(ignore)));
     const latestReleaseVersion = timeKeys[timeKeys.length - 1];
 
     return {

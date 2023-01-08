@@ -10,10 +10,7 @@ import { Database } from './types/supabase';
       provide: 'supabaseClient',
       inject: [ConfigService],
       useFactory(configService: ConfigService) {
-        return createClient<Database>(
-          configService.get('SUPABASE_URL'),
-          configService.get('SUPABASE_KEY'),
-        );
+        return createClient<Database>(configService.get('SUPABASE_URL'), configService.get('SUPABASE_KEY'));
       },
     },
   ],

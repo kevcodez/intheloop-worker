@@ -28,21 +28,16 @@ export class BlogWriter {
       return;
     }
 
-    this.logger.log(
-      'Checking ' + blogPosts.length + ' rss posts for blog ' + blog.id,
-    );
+    this.logger.log('Checking ' + blogPosts.length + ' rss posts for blog ' + blog.id);
 
     const unsavedBlogPosts = blogPosts.filter(
-      (it) =>
-        !existingBlogPosts.some((existing) => existing.info.guid === it.guid),
+      (it) => !existingBlogPosts.some((existing) => existing.info.guid === it.guid),
     );
 
     const newBlogPosts: Omit<BlogPost, 'id'>[] = [];
 
     for (const blogPostInfo of unsavedBlogPosts) {
-      const blogPostLanguage = await this.languageDetector.detectLanguage(
-        blogPostInfo.summary,
-      );
+      const blogPostLanguage = await this.languageDetector.detectLanguage(blogPostInfo.summary);
       this.logger.log('Detected language for blog post', {
         blogPostLanguage,
       });
@@ -56,13 +51,9 @@ export class BlogWriter {
       });
     }
 
-    this.logger.log(
-      newBlogPosts.length + ' posts to insert for blog ' + blog.id,
-    );
+    this.logger.log(newBlogPosts.length + ' posts to insert for blog ' + blog.id);
 
-    const { error: errorInserting } = await this.supabaseClient
-      .from('blog_posts')
-      .insert(newBlogPosts);
+    const { error: errorInserting } = await this.supabaseClient.from('blog_posts').insert(newBlogPosts);
 
     if (errorInserting) {
       this.logger.error(errorInserting);

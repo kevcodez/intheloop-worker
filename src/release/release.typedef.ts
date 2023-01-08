@@ -1,16 +1,11 @@
-import {
-  ReleaseStrategy,
-  ScrapeSettingsReleases,
-} from 'src/types/supabase-custom';
+import { ReleaseStrategy, ScrapeSettingsReleases } from 'src/types/supabase-custom';
 
 export type ReleaseQueueData = {
   topicId: string;
 };
 
 export interface ReleaseFetcher {
-  fetch(
-    scrapeSettings: ScrapeSettingsReleases,
-  ): Promise<{ releases: FetchedRelease[]; latestRelease?: string }>;
+  fetch(scrapeSettings: ScrapeSettingsReleases): Promise<{ releases: FetchedRelease[]; latestRelease?: string }>;
 
   get strategy(): ReleaseStrategy;
 }

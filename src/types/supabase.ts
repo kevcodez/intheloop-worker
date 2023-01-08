@@ -1,12 +1,6 @@
-import { BlogPostInfo, ReleaseInfo } from "./supabase-custom";
+import { BlogPostInfo, ReleaseInfo } from './supabase-custom';
 
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json }
-  | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
 
 export interface Database {
   public: {

@@ -1,8 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  ScrapeSettingsReleases,
-  ReleaseStrategy,
-} from 'src/types/supabase-custom';
+import { ScrapeSettingsReleases, ReleaseStrategy } from 'src/types/supabase-custom';
 import { FetchedRelease, ReleaseFetcher } from './release.typedef';
 import { Octokit } from '@octokit/rest';
 
@@ -12,9 +9,7 @@ const octokit = new Octokit();
 export class ReleaseFetcherGithub implements ReleaseFetcher {
   private readonly logger = new Logger(ReleaseFetcherGithub.name);
 
-  async fetch(
-    scrapeSettings: ScrapeSettingsReleases,
-  ): Promise<{ releases: FetchedRelease[]; latestRelease?: string }> {
+  async fetch(scrapeSettings: ScrapeSettingsReleases): Promise<{ releases: FetchedRelease[]; latestRelease?: string }> {
     const { data } = await octokit.repos.listReleases({
       owner: scrapeSettings.meta.owner,
       repo: scrapeSettings.meta.repo,

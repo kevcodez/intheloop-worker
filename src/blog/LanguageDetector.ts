@@ -21,9 +21,7 @@ export class LanguageDetector {
         : htmlEntitiesDecoded;
 
     const detections = await this.translate.detect(partOfTheText);
-    const detectionsArray = Array.isArray(detections)
-      ? detections
-      : [detections];
+    const detectionsArray = Array.isArray(detections) ? detections : [detections];
     if (detectionsArray.length) {
       return detectionsArray[0].language;
     } else {

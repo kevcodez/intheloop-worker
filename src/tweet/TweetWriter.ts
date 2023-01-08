@@ -7,17 +7,12 @@ import { TwitterTweet } from './tweet.typedef';
 export class TweetWriter {
   private readonly logger = new Logger(TweetWriter.name);
 
-  constructor(
-    @Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>,
-  ) {}
+  constructor(@Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>) {}
 
   async saveNewPopularTweets(topicId: string, tweets: TwitterTweet[]) {
     const tweetIds = tweets.map((it) => it.id_str);
 
-    const { data: existingTweets, error } = await this.supabaseClient
-      .from('tweets')
-      .select('id')
-      .in('id', tweetIds);
+    const { data: existingTweets, error } = await this.supabaseClient.from('tweets').select('id').in('id', tweetIds);
 
     if (error) {
       this.logger.error(error);
@@ -26,9 +21,7 @@ export class TweetWriter {
 
     const existingTweetsIds = existingTweets.map((it) => it.id);
 
-    const nonExistingTweets = tweets.filter(
-      (it) => !existingTweetsIds.includes(it.id_str),
-    );
+    const nonExistingTweets = tweets.filter((it) => !existingTweetsIds.includes(it.id_str));
 
     this.logger.log(`Saving ${nonExistingTweets.length} new tweets`);
 
@@ -53,9 +46,7 @@ export class TweetWriter {
       });
     }
 
-    const { error: errorInserting } = await this.supabaseClient
-      .from('tweets')
-      .insert(tweetsToSave);
+    const { error: errorInserting } = await this.supabaseClient.from('tweets').insert(tweetsToSave);
 
     if (errorInserting) {
       this.logger.error(errorInserting);

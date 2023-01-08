@@ -1,14 +1,7 @@
-import {
-  ChangelogScrapingStrategy,
-  Release,
-  ScrapeSettingsTweetsChangelogs,
-} from 'src/types/supabase-custom';
+import { ChangelogScrapingStrategy, Release, ScrapeSettingsTweetsChangelogs } from 'src/types/supabase-custom';
 
 export interface ChangelogScraper {
-  parseChangelog(
-    scrapeSettings: ScrapeSettingsTweetsChangelogs,
-    release: Release,
-  ): Promise<ParsedChangelog | null>;
+  parseChangelog(scrapeSettings: ScrapeSettingsTweetsChangelogs, release: Release): Promise<ParsedChangelog | null>;
 
   get strategy(): ChangelogScrapingStrategy;
 }

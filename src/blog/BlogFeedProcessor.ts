@@ -23,11 +23,7 @@ export class BlogFeedProcessor extends WorkerHost {
   async process(job: Job<BlogQueueData, any, string>): Promise<any> {
     const blogId = job.data.blogId;
 
-    const { data: blog } = await this.supabaseClient
-      .from('blogs')
-      .select(`*`)
-      .eq('id', blogId)
-      .single();
+    const { data: blog } = await this.supabaseClient.from('blogs').select(`*`).eq('id', blogId).single();
 
     if (!blog) return;
 

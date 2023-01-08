@@ -34,22 +34,14 @@ export class ReleaseProcessor extends WorkerHost {
 
     const scrapeSettings = data as unknown as ScrapeSettingsReleases;
 
-    const matchingProvider = this.releaseFetchers.find(
-      (fetcher) => fetcher.strategy === scrapeSettings.via,
-    );
+    const matchingProvider = this.releaseFetchers.find((fetcher) => fetcher.strategy === scrapeSettings.via);
 
-    const { releases, latestRelease } = await matchingProvider.fetch(
-      scrapeSettings,
-    );
+    const { releases, latestRelease } = await matchingProvider.fetch(scrapeSettings);
 
     await this.releaseWriter.saveUnknownReleases(topicId, releases);
 
     if (latestRelease) {
-      const { data: topic } = await this.supabaseClient
-        .from('topic')
-        .select(`*`)
-        .eq('id', topicId)
-        .single();
+      const { data: topic } = await this.supabaseClient.from('topic').select(`*`).eq('id', topicId).single();
       await this.topicWriter.saveLatestVersion(topic, latestRelease);
     }
 

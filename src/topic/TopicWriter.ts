@@ -7,9 +7,7 @@ import { Topic } from 'src/types/supabase-custom';
 export class TopicWriter {
   private readonly logger = new Logger(TopicWriter.name);
 
-  constructor(
-    @Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>,
-  ) {}
+  constructor(@Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>) {}
 
   async saveLatestVersion(topic: Topic, latestReleaseVersion: string) {
     if (topic.info.latestVersion === latestReleaseVersion) return;
