@@ -3,7 +3,8 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SupabaseModule } from 'src/supabase.module';
-import Twitter from 'twitter-lite';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Twitter = require('twitter-lite');
 import { TweetJobScheduler } from './TweetJobScheduler';
 import { TweetProcessor } from './TweetProcessor';
 import { TweetWriter } from './TweetWriter';
@@ -34,6 +35,5 @@ import { TweetWriter } from './TweetWriter';
     TweetJobScheduler,
     TweetProcessor,
   ],
-  exports: ['twitterClientV1'],
 })
 export class TweetModule {}

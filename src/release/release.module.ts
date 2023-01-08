@@ -5,9 +5,9 @@ import { SupabaseModule } from 'src/supabase.module';
 import { TopicModule } from 'src/topic/topic.module';
 import { ChangelogJobScheduler } from './changelog/ChangelogJobScheduler';
 import { ChangelogProcessor } from './changelog/ChangelogProcessor';
-import { ChangelogSanitizer } from './changelog/sanitizer/changelogSanitizer';
+import { ChangelogSanitizer } from './changelog/sanitizer/ChangelogSanitizer';
 import { MarkdownSanitizer } from './changelog/sanitizer/MarkdownSanitizer';
-import { ChangelogScrapingService } from './changelog/scraper/changelogScrapingService';
+import { ChangelogScrapingService } from './changelog/scraper/ChangelogScrapingService';
 import { GithubReleaseChangelogScraper } from './changelog/scraper/GithubReleaseChangelogScraper';
 import { MarkdownFileChangelogScraper } from './changelog/scraper/MarkdownFileChangelogScraper';
 import { ReleaseFetcherGithub } from './ReleaseFetcherGithub';
@@ -41,6 +41,7 @@ import { ReleaseWriter } from './ReleaseWriter';
     ChangelogJobScheduler,
     GithubReleaseChangelogScraper,
     MarkdownFileChangelogScraper,
+    ChangelogScrapingService,
     {
       provide: 'releaseFetchers',
       useFactory: (github, npm) => [github, npm],
@@ -51,7 +52,6 @@ import { ReleaseWriter } from './ReleaseWriter';
       useFactory: (githubRelease, markdownFile) => [githubRelease, markdownFile],
       inject: [GithubReleaseChangelogScraper, MarkdownFileChangelogScraper],
     },
-    ChangelogScrapingService,
   ],
 })
 export class ReleaseModule {}

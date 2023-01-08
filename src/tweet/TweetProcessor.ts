@@ -17,8 +17,6 @@ export class TweetProcessor extends WorkerHost {
     private tweetWriter: TweetWriter,
   ) {
     super();
-
-    this.worker.concurrency = 1;
   }
 
   private readonly logger = new Logger(TweetProcessor.name);
