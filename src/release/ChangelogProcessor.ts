@@ -1,19 +1,29 @@
 import { OnWorkerEvent, Processor, WorkerHost } from '@nestjs/bullmq';
-import { Logger } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { Job } from 'bullmq';
+import { Database } from 'src/types/supabase';
+import { ChangelogQueueData } from './typedef';
 
 @Processor('changelog')
 export class ChangelogProcessor extends WorkerHost {
-  private readonly logger = new Logger(ChangelogProcessor.name);
-
-  async process(job: Job<any, any, string>): Promise<any> {
-    this.logger.log('process');
-    // do some stuff
+  constructor(
+    @Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>,
+  ) {
+    super();
   }
 
-  @OnWorkerEvent('completed')
-  onCompleted() {
-    this.logger.log('completed');
+  private readonly logger = new Logger(ChangelogProcessor.name);
+
+  async process(job: Job<ChangelogQueueData, any, string>): Promise<any> {
+    const releaseId = job.data.releaseId;
+
+    const { data: release } = await this.supabaseClient
+      .from('release')
+      .select(`info`)
+      .eq('id', releaseId)
+      .single();
+
     // do some stuff
   }
 }

@@ -182,6 +182,43 @@ export interface Database {
           published_at?: string | null;
         };
       };
+      release_changelog: {
+        Row: {
+          release_id: number;
+          changelog: string | null;
+          meta: Json | null;
+          created_at: string | null;
+        };
+        Insert: {
+          release_id?: number;
+          changelog?: string | null;
+          meta?: Json | null;
+          created_at?: string | null;
+        };
+        Update: {
+          release_id?: number;
+          changelog?: string | null;
+          meta?: Json | null;
+          created_at?: string | null;
+        };
+      };
+      scrape_settings: {
+        Row: {
+          topic_id: string;
+          releases: Json | null;
+          tweets: Json | null;
+        };
+        Insert: {
+          topic_id: string;
+          releases?: Json | null;
+          tweets?: Json | null;
+        };
+        Update: {
+          topic_id?: string;
+          releases?: Json | null;
+          tweets?: Json | null;
+        };
+      };
       topic: {
         Row: {
           info: Json | null;
