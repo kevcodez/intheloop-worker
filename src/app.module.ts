@@ -18,6 +18,8 @@ import { TweetModule } from './tweet/tweet.module';
         connection: {
           host: configService.get('REDIS_HOST'),
           port: Number(configService.get('REDIS_PORT')),
+          username: configService.get('REDIS_USERNAME'),
+          password: configService.get('REDIS_PASSWORD'),
         },
         defaultJobOptions: {
           removeOnComplete: true,
