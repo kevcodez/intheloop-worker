@@ -14,7 +14,6 @@ export class BlogWriter {
   ) {}
 
   async saveNewBlogPosts(blog: Blog, blogPosts: BlogPostInfo[]) {
-    console.log('a');
     const { data: existingBlogPosts, error } = await this.supabaseClient
       .from('blog_posts')
       .select('*')
@@ -24,7 +23,6 @@ export class BlogWriter {
         blogPosts.map((it) => it.guid),
       );
 
-    console.log('b');
     if (error) {
       this.logger.error(error);
       return;

@@ -20,14 +20,10 @@ export class ChangelogSanitizer {
       (it) => it.type === 'heading' || it.children?.[0]?.value === heading,
     );
 
-    console.log(idxHeading);
-
     if (idxHeading !== -1) {
       const nextHeading = tree.children.findIndex((it, idx) => it.type === 'heading' && idx > idxHeading);
 
       const endIndex = nextHeading === -1 ? tree.children.length - 1 : nextHeading;
-
-      console.log(endIndex - idxHeading);
 
       tree.children.splice(idxHeading, endIndex - idxHeading + 1);
     }
