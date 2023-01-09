@@ -37,9 +37,13 @@ export class ReleaseProcessor extends WorkerHost {
       return;
     }
 
-    const scrapeSettings = data as unknown as ScrapeSettingsReleases;
+    const scrapeSettings = data.releases as unknown as ScrapeSettingsReleases;
 
     const matchingProvider = this.releaseFetchers.find((fetcher) => fetcher.strategy === scrapeSettings.via);
+
+    if (!matchingProvider) {
+      throw new Error(`No matching release fetcher for ${scrapeSettings.via}`);
+    }
 
     const { releases, latestRelease } = await matchingProvider.fetch(scrapeSettings);
 

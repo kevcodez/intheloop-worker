@@ -53,10 +53,8 @@ export class ReleaseWriter {
         version: release.version,
         publishedAt: release.publishedAt,
       },
-      name: release.name,
       published_at: release.publishedAt,
       topic: topicId,
-      version: release.version,
     }));
 
     const { error: errorInserting } = await this.supabaseClient.from('release').insert(releasesToInsert);

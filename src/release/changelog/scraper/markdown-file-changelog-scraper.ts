@@ -17,7 +17,7 @@ export class MarkdownFileChangelogScraper implements ChangelogScraper {
     let children: any[] = tree.children;
 
     const versionHeading = children.findIndex(
-      (it) => it.type === 'heading' && it.children?.[0].value?.includes(release.version + ' '),
+      (it) => it.type === 'heading' && it.children?.[0].value?.includes(release.info.version + ' '),
     );
     if (versionHeading === -1) return null;
 

@@ -29,7 +29,7 @@ export class ReleaseFetcherGithub implements ReleaseFetcher {
       };
     });
 
-    this.logger.log('Getting latest release', { scrapeSettings });
+    this.logger.log('Getting latest release', { repo: scrapeSettings.meta.repo, owner: scrapeSettings.meta.repo });
 
     const { data: latestRelease } = await octokit.repos.getLatestRelease({
       owner: scrapeSettings.meta.owner,

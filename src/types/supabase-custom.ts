@@ -32,10 +32,8 @@ export interface ScrapeSettingsTweetsChangelogs {
 
 export type Release = {
   id: string;
-  name: string;
   topic: string;
   published_at: string;
-  version: string;
   info: ReleaseInfo;
 };
 
