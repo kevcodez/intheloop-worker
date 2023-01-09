@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SupabaseModule } from 'src/supabase.module';
-import { TopicWriter } from './TopicWriter';
+import { TopicWriter } from './topic-writer';
 
 @Module({
   imports: [SupabaseModule],

@@ -4,11 +4,12 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SupabaseModule } from 'src/supabase.module';
-import { BlogFeedJobScheduler } from './BlogFeedJobScheduler';
-import { BlogFeedProcessor } from './BlogFeedProcessor';
-import { BlogWriter } from './BlogWriter';
-import { LanguageDetector } from './LanguageDetector';
-import { RssFeedParser } from './RssFeedParser';
+import { BlogController } from './blog.controller';
+import { BlogFeedJobScheduler } from './blog-feed-job-scheduler';
+import { BlogFeedProcessor } from './blog-feed-processor';
+import { BlogWriter } from './blog-writer';
+import { LanguageDetector } from './language-detector';
+import { RssFeedParser } from './rss-feed-parser';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { RssFeedParser } from './RssFeedParser';
     BlogFeedProcessor,
     BlogFeedJobScheduler,
   ],
+  controllers: [BlogController],
   exports: ['translate'],
 })
 export class BlogeModule {}

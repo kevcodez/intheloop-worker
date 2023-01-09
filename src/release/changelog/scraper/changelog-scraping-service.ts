@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Release, ScrapeSettingsTweetsChangelogs } from 'src/types/supabase-custom';
 import { ChangelogScraper, ParsedChangelog } from '../changelog.typedef';
-import { ChangelogSanitizer } from '../sanitizer/ChangelogSanitizer';
+import { ChangelogSanitizer } from '../sanitizer/changelog-sanitizer';
 
 @Injectable()
 export class ChangelogScrapingService {

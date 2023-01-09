@@ -16,6 +16,8 @@ export class ChangelogProcessor extends WorkerHost {
   async process(job: Job<ChangelogQueueData, any, string>): Promise<any> {
     const releaseId = job.data.releaseId;
 
+    this.logger.log('Processing job', { releaseId });
+
     const { data: release } = await this.supabaseClient.from('release').select(`info`).eq('id', releaseId).single();
 
     // do some stuff

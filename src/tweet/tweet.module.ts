@@ -5,9 +5,10 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { SupabaseModule } from 'src/supabase.module';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Twitter = require('twitter-lite');
-import { TweetJobScheduler } from './TweetJobScheduler';
-import { TweetProcessor } from './TweetProcessor';
-import { TweetWriter } from './TweetWriter';
+import { TweetJobScheduler } from './tweet-job-scheduler';
+import { TweetProcessor } from './tweet-processor';
+import { TweetWriter } from './tweet-writer';
+import { TweetController } from './tweet.controller';
 
 @Module({
   imports: [
@@ -35,5 +36,6 @@ import { TweetWriter } from './TweetWriter';
     TweetJobScheduler,
     TweetProcessor,
   ],
+  controllers: [TweetController],
 })
 export class TweetModule {}

@@ -5,8 +5,8 @@ import { Job } from 'bullmq';
 import _ from 'lodash';
 import { Database } from 'src/types/supabase';
 import { BlogQueueData } from './blog.typedef';
-import { BlogWriter } from './BlogWriter';
-import { RssFeedParser } from './RssFeedParser';
+import { BlogWriter } from './blog-writer';
+import { RssFeedParser } from './rss-feed-parser';
 
 @Processor('blog')
 export class BlogFeedProcessor extends WorkerHost {
@@ -22,6 +22,8 @@ export class BlogFeedProcessor extends WorkerHost {
 
   async process(job: Job<BlogQueueData, any, string>): Promise<any> {
     const blogId = job.data.blogId;
+
+    this.logger.log('Processing blog feed job', { blogId });
 
     const { data: blog } = await this.supabaseClient.from('blogs').select(`*`).eq('id', blogId).single();
 

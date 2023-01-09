@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Root } from 'mdast';
 import { ChangelogFormat, ParsedChangelog } from '../changelog.typedef';
-import { MarkdownSanitizer } from './MarkdownSanitizer';
+import { MarkdownSanitizer } from './markdown-sanitizer';
 
 @Injectable()
 export class ChangelogSanitizer {

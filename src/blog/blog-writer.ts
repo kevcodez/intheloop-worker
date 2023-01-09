@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'src/types/supabase';
 import { Blog, BlogPost, BlogPostInfo } from 'src/types/supabase-custom';
-import { LanguageDetector } from './LanguageDetector';
+import { LanguageDetector } from './language-detector';
 
 @Injectable()
 export class BlogWriter {

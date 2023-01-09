@@ -3,18 +3,20 @@ import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SupabaseModule } from 'src/supabase.module';
 import { TopicModule } from 'src/topic/topic.module';
-import { ChangelogJobScheduler } from './changelog/ChangelogJobScheduler';
-import { ChangelogProcessor } from './changelog/ChangelogProcessor';
-import { ChangelogSanitizer } from './changelog/sanitizer/ChangelogSanitizer';
-import { MarkdownSanitizer } from './changelog/sanitizer/MarkdownSanitizer';
-import { ChangelogScrapingService } from './changelog/scraper/ChangelogScrapingService';
-import { GithubReleaseChangelogScraper } from './changelog/scraper/GithubReleaseChangelogScraper';
-import { MarkdownFileChangelogScraper } from './changelog/scraper/MarkdownFileChangelogScraper';
-import { ReleaseFetcherGithub } from './ReleaseFetcherGithub';
-import { ReleaseFetcherNpm } from './ReleaseFetcherNpm';
-import { ReleaseJobScheduler as ReleaseJobScheduler } from './ReleaseJobScheduler';
-import { ReleaseProcessor } from './ReleaseProcessor';
-import { ReleaseWriter } from './ReleaseWriter';
+import { ChangelogJobScheduler } from './changelog/changelog-job-scheduler';
+import { ChangelogProcessor } from './changelog/changelog-processor';
+import { ChangelogController } from './changelog/changelog.controller';
+import { ChangelogSanitizer } from './changelog/sanitizer/changelog-sanitizer';
+import { MarkdownSanitizer } from './changelog/sanitizer/markdown-sanitizer';
+import { ChangelogScrapingService } from './changelog/scraper/changelog-scraping-service';
+import { GithubReleaseChangelogScraper } from './changelog/scraper/github-release-changelog-scraper';
+import { MarkdownFileChangelogScraper } from './changelog/scraper/markdown-file-changelog-scraper';
+import { ReleaseFetcherGithub } from './release-fetcher-github';
+import { ReleaseFetcherNpm } from './release-fetcher-npm';
+import { ReleaseJobScheduler as ReleaseJobScheduler } from './release-job-scheduler';
+import { ReleaseProcessor } from './release-processor';
+import { ReleaseWriter } from './release-writer';
+import { ReleaseController } from './release.controller';
 
 @Module({
   imports: [
@@ -53,5 +55,7 @@ import { ReleaseWriter } from './ReleaseWriter';
       inject: [GithubReleaseChangelogScraper, MarkdownFileChangelogScraper],
     },
   ],
+
+  controllers: [ReleaseController, ChangelogController],
 })
 export class ReleaseModule {}

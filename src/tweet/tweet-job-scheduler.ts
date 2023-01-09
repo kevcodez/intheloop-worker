@@ -14,7 +14,7 @@ export class TweetJobScheduler {
   ) {}
 
   @Cron('20 2,9,18 * * *')
-  async handleCron() {
+  async scrape() {
     const { data } = await this.supabaseClient.from('scrape_settings').select('topic_id').not('tweets', 'is', null);
 
     this.blogQueue.addBulk(

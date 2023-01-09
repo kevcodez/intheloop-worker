@@ -7,7 +7,7 @@ import { Database } from 'src/types/supabase';
 import { ScrapeSettingsTweets, TweetPopularitySettings, TweetSearch } from 'src/types/supabase-custom';
 import Twitter from 'twitter-lite';
 import { TweetQueueData, TwitterTweet } from './tweet.typedef';
-import { TweetWriter } from './TweetWriter';
+import { TweetWriter } from './tweet-writer';
 
 @Processor('tweet')
 export class TweetProcessor extends WorkerHost {
@@ -23,6 +23,8 @@ export class TweetProcessor extends WorkerHost {
 
   async process(job: Job<TweetQueueData, any, string>): Promise<any> {
     const topicId = job.data.topicId;
+
+    this.logger.log('Processing job', { topicId });
 
     const { data } = await this.supabaseClient
       .from('scrape_settings')

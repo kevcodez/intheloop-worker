@@ -14,7 +14,7 @@ export class BlogFeedJobScheduler {
   ) {}
 
   @Cron('0 1,14 * * *')
-  async handleCron() {
+  async scrape() {
     // Get releases without release notes
     const { data } = await this.supabaseClient.from('blog').select('id');
 

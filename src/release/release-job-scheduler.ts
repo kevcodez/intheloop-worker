@@ -16,7 +16,7 @@ export class ReleaseJobScheduler {
   ) {}
 
   @Cron('15 1,5,9,14,19 * * *')
-  async handleCron() {
+  async scrape() {
     // Get releases without release notes
     const { data } = await this.supabaseClient.from('topic').select('id');
 

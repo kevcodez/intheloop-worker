@@ -15,8 +15,8 @@ export class ChangelogJobScheduler {
     @Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>,
   ) {}
 
-  @Cron('*/60 * * * * *')
-  async handleCron() {
+  @Cron('* */60 * * * *')
+  async scrape() {
     // Get releases without release notes
     const { data } = await this.supabaseClient
       .from('release')

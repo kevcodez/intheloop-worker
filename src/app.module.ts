@@ -1,7 +1,9 @@
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { HealthController } from './app.controller';
+import { AuthGuard } from './auth.guard';
 import { BlogeModule } from './blog/blog.module';
 import { ReleaseModule } from './release/release.module';
 import { TopicModule } from './topic/topic.module';
@@ -27,6 +29,12 @@ import { TweetModule } from './tweet/tweet.module';
     ReleaseModule,
     BlogeModule,
     TweetModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
   controllers: [HealthController],
 })
