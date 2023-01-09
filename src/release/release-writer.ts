@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from 'src/types/supabase';
-import _ from 'lodash';
+import { chunk } from 'lodash';
 import { Release, ReleaseInfo } from 'src/types/supabase-custom';
 import { FetchedRelease } from './release.typedef';
 
@@ -12,15 +12,10 @@ export class ReleaseWriter {
   constructor(@Inject('supabaseClient') private supabaseClient: SupabaseClient<Database>) {}
 
   async saveUnknownReleases(topicId: string, fetchedReleases: FetchedRelease[]) {
-    this.logger.log('Fetched releases', {
-      topicId,
-      releases: fetchedReleases.map((it) => it.version),
-    });
-
     const releasesFromSupabase: { info: ReleaseInfo }[] = [];
 
     // Need to chunk for Supabase
-    const versionChunks = _.chunk(
+    const versionChunks = chunk(
       fetchedReleases.map((it) => it.version),
       100,
     );
@@ -41,12 +36,15 @@ export class ReleaseWriter {
       (release) => !releasesFromSupabase.some((it) => it.info.version === release.version),
     );
 
-    if (releasesNotInDatabaseYet.length) {
-      this.logger.log('Saving new releases', {
-        releasesInSupabase: releasesFromSupabase.length,
-        releasesNotInDatabase: releasesNotInDatabaseYet.length,
-      });
+    if (!releasesNotInDatabaseYet.length) {
+      this.logger.log('All releases already in database', { topicId });
+      return;
     }
+
+    this.logger.log('Saving new releases', {
+      releasesInSupabase: releasesFromSupabase.map((it) => it.info.version),
+      releasesNotInDatabase: releasesNotInDatabaseYet.map((it) => it.version),
+    });
 
     const releasesToInsert: Omit<Release, 'id'>[] = releasesNotInDatabaseYet.map((release) => ({
       info: {

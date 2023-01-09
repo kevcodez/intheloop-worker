@@ -24,7 +24,7 @@ export class ReleaseProcessor extends WorkerHost {
   async process(job: Job<ReleaseQueueData, any, string>): Promise<any> {
     const topicId = job.data.topicId;
 
-    this.logger.log('Processing job', { topicId });
+    this.logger.log('Processing release job', { topicId });
 
     const { data } = await this.supabaseClient
       .from('scrape_settings')
@@ -32,7 +32,10 @@ export class ReleaseProcessor extends WorkerHost {
       .eq('topic_id', topicId)
       .single();
 
-    if (!data) return;
+    if (!data) {
+      this.logger.warn('Scrape settings not found for releases', { topicId });
+      return;
+    }
 
     const scrapeSettings = data as unknown as ScrapeSettingsReleases;
 
@@ -40,13 +43,17 @@ export class ReleaseProcessor extends WorkerHost {
 
     const { releases, latestRelease } = await matchingProvider.fetch(scrapeSettings);
 
+    this.logger.log('Fetched releases', {
+      topicId,
+      releases: releases.map((it) => it.version),
+      latestVersion: latestRelease,
+    });
+
     await this.releaseWriter.saveUnknownReleases(topicId, releases);
 
     if (latestRelease) {
       const { data: topic } = await this.supabaseClient.from('topic').select(`*`).eq('id', topicId).single();
       await this.topicWriter.saveLatestVersion(topic, latestRelease);
     }
-
-    // do some stuff
   }
 }

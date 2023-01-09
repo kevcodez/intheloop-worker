@@ -24,7 +24,7 @@ export class TweetProcessor extends WorkerHost {
   async process(job: Job<TweetQueueData, any, string>): Promise<any> {
     const topicId = job.data.topicId;
 
-    this.logger.log('Processing job', { topicId });
+    this.logger.log('Processing tweet job', { topicId });
 
     const { data } = await this.supabaseClient
       .from('scrape_settings')
@@ -32,7 +32,10 @@ export class TweetProcessor extends WorkerHost {
       .eq('topic_id', topicId)
       .single();
 
-    if (!data) return;
+    if (!data) {
+      this.logger.warn('No scrape settings for tweets', { topicId });
+      return;
+    }
 
     const scrapeSettingsTweets = data.tweets as unknown as ScrapeSettingsTweets;
 
@@ -49,7 +52,8 @@ export class TweetProcessor extends WorkerHost {
   }
 
   async retrieveTweets(search: TweetSearch, popularitySettings: TweetPopularitySettings) {
-    // V2 API does not allow to filter by min favorites/replies meaning we have to loop through everything and use up all the quota very quickly
+    // V2 API does not allow to filter by min favorites/replies meaning
+    // we have to loop through everything and use up all the quota very quickly
     const oneDayAgo = new Date();
     oneDayAgo.setDate(oneDayAgo.getDate() - 1);
 

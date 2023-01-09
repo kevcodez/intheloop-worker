@@ -23,8 +23,6 @@ export class TweetWriter {
 
     const nonExistingTweets = tweets.filter((it) => !existingTweetsIds.includes(it.id_str));
 
-    this.logger.log(`Saving ${nonExistingTweets.length} new tweets`);
-
     const tweetsToSave = nonExistingTweets.map((tweet) => {
       return {
         id: tweet.id_str,
@@ -40,11 +38,15 @@ export class TweetWriter {
       };
     });
 
-    if (tweetsToSave.length) {
-      this.logger.log('Inserting tweets', {
-        tweetSize: tweetsToSave.length,
-      });
+    if (!tweetsToSave.length) {
+      this.logger.log('No new tweets to save', { topicId });
+      return;
     }
+
+    this.logger.log('Inserting tweets', {
+      tweetSize: tweetsToSave.length,
+      topicId,
+    });
 
     const { error: errorInserting } = await this.supabaseClient.from('tweets').insert(tweetsToSave);
 

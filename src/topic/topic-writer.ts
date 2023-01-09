@@ -13,7 +13,7 @@ export class TopicWriter {
     if (topic.info.latestVersion === latestReleaseVersion) return;
 
     this.logger.log('Setting latest version', {
-      topic: topic.id,
+      topicId: topic.id,
       version: latestReleaseVersion,
     });
 

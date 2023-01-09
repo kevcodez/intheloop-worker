@@ -1,4 +1,4 @@
-import { BlogPostInfo, ReleaseInfo } from './supabase-custom';
+import { BlogInfo, BlogPostInfo, ReleaseInfo } from './supabase-custom';
 
 export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
 
@@ -8,17 +8,17 @@ export interface Database {
       blog: {
         Row: {
           id: string;
-          info: Json | null;
+          info: BlogInfo | null;
           topics: string[] | null;
         };
         Insert: {
           id: string;
-          info?: Json | null;
+          info?: BlogInfo | null;
           topics?: string[] | null;
         };
         Update: {
           id?: string;
-          info?: Json | null;
+          info?: BlogInfo | null;
           topics?: string[] | null;
         };
       };

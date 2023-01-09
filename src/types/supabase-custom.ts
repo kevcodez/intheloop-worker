@@ -56,7 +56,12 @@ export type TopicInfo = {
 export type Blog = {
   id: string;
   topics: string[];
+  info: BlogInfo;
 };
+
+export type BlogInfo = {
+  rssFeedUrl: string;
+} & Json;
 
 export type BlogPost = {
   id: string;
