@@ -2,7 +2,6 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Inject, Logger } from '@nestjs/common';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Job } from 'bullmq';
-import _ from 'lodash';
 import { Database } from 'src/types/supabase';
 import { ScrapeSettingsTweets, TweetPopularitySettings, TweetSearch } from 'src/types/supabase-custom';
 import Twitter from 'twitter-lite';
