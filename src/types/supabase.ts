@@ -164,18 +164,21 @@ export interface Database {
           topic: string | null;
           info: ReleaseInfo | null;
           published_at: string | null;
+          tag: string | null;
         };
         Insert: {
           id?: number;
           topic?: string | null;
           info?: ReleaseInfo | null;
           published_at?: string | null;
+          tag: string | null;
         };
         Update: {
           id?: number;
           topic?: string | null;
           info?: ReleaseInfo | null;
           published_at?: string | null;
+          tag: string | null;
         };
       };
       release_changelog: {
@@ -203,16 +206,19 @@ export interface Database {
           topic_id: string;
           releases: Json | null;
           tweets: Json | null;
+          changelogs: Json | null;
         };
         Insert: {
           topic_id: string;
           releases?: Json | null;
           tweets?: Json | null;
+          changelogs?: Json | null;
         };
         Update: {
           topic_id?: string;
           releases?: Json | null;
           tweets?: Json | null;
+          changelogs?: Json | null;
         };
       };
       topic: {

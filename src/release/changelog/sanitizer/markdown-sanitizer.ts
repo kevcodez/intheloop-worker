@@ -1,4 +1,4 @@
-import remark from 'remark';
+import * as remark from 'remark';
 import { ChangelogFormat, ParsedChangelog } from '../changelog.typedef';
 import { Injectable } from '@nestjs/common';
 
@@ -8,6 +8,7 @@ export class MarkdownSanitizer {
     const tree = await remark().parse(changelog.changes);
 
     this.removeHeading(tree, 'Checksums');
+    this.removeHeading(tree, 'Credits');
 
     return remark().stringify(tree);
   }

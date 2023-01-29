@@ -53,6 +53,7 @@ export class ReleaseWriter {
         version: release.version,
         publishedAt: release.publishedAt,
       },
+      tag: release.tag,
       published_at: release.publishedAt,
       topic: topicId,
     }));

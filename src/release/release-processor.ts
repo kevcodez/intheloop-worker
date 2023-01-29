@@ -45,19 +45,23 @@ export class ReleaseProcessor extends WorkerHost {
       throw new Error(`No matching release fetcher for ${scrapeSettings.via}`);
     }
 
-    const { releases, latestRelease } = await matchingProvider.fetch(scrapeSettings);
+    try {
+      const { releases, latestRelease } = await matchingProvider.fetch(scrapeSettings);
 
-    this.logger.log('Fetched releases', {
-      topicId,
-      releases: releases.map((it) => it.version),
-      latestVersion: latestRelease,
-    });
+      this.logger.log('Fetched releases', {
+        topicId,
+        releases: releases.map((it) => it.version),
+        latestVersion: latestRelease,
+      });
 
-    await this.releaseWriter.saveUnknownReleases(topicId, releases);
+      await this.releaseWriter.saveUnknownReleases(topicId, releases);
 
-    if (latestRelease) {
-      const { data: topic } = await this.supabaseClient.from('topic').select(`*`).eq('id', topicId).single();
-      await this.topicWriter.saveLatestVersion(topic, latestRelease);
+      if (latestRelease) {
+        const { data: topic } = await this.supabaseClient.from('topic').select(`*`).eq('id', topicId).single();
+        await this.topicWriter.saveLatestVersion(topic, latestRelease);
+      }
+    } catch (err) {
+      this.logger.error(err);
     }
   }
 }

@@ -9,7 +9,9 @@ const octokit = new Octokit();
 export class ReleaseFetcherGithub implements ReleaseFetcher {
   private readonly logger = new Logger(ReleaseFetcherGithub.name);
 
-  async fetch(scrapeSettings: ScrapeSettingsReleases): Promise<{ releases: FetchedRelease[]; latestRelease?: string }> {
+  async fetch(
+    scrapeSettings: ScrapeSettingsReleases,
+  ): Promise<{ releases: FetchedRelease[]; latestRelease?: string; tag?: string }> {
     const { data } = await octokit.repos.listReleases({
       owner: scrapeSettings.meta.owner,
       repo: scrapeSettings.meta.repo,
@@ -26,6 +28,7 @@ export class ReleaseFetcherGithub implements ReleaseFetcher {
         meta: {
           prerelease: release.prerelease,
         },
+        tag: release.tag_name,
       };
     });
 
@@ -41,6 +44,7 @@ export class ReleaseFetcherGithub implements ReleaseFetcher {
     return {
       releases: releasesFromGithub,
       latestRelease: latestReleaseVersion,
+      tag: latestRelease.tag_name,
     };
   }
 

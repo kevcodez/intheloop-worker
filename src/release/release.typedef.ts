@@ -15,4 +15,5 @@ export type FetchedRelease = {
   publishedAt: string;
   version: string;
   meta: Record<string, any>;
+  tag?: string;
 };

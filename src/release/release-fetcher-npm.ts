@@ -1,6 +1,6 @@
 import { ScrapeSettingsReleases, ReleaseStrategy } from 'src/types/supabase-custom';
 import { FetchedRelease, ReleaseFetcher } from './release.typedef';
-import npmFetch from 'npm-registry-fetch';
+import * as npmFetch from 'npm-registry-fetch';
 
 export class ReleaseFetcherNpm implements ReleaseFetcher {
   async fetch(scrapeSettings: ScrapeSettingsReleases): Promise<{ releases: FetchedRelease[]; latestRelease?: string }> {

@@ -21,20 +21,22 @@ export type ScrapeSettingsTweets = {
 
 export type ChangelogScrapingStrategy = 'github_release' | 'markdown_file';
 
-export interface ScrapeSettingsTweetsChangelogs {
+export interface ScrapeSettingsChangelogs {
   strategy: ChangelogScrapingStrategy;
   meta: {
-    markdownFile?: string;
-    githubOwner?: string;
-    githubRepo?: string;
+    markdownFileUrl?: string;
+    owner?: string;
+    repo?: string;
+    tagTemplate?: string;
   };
 }
 
 export type Release = {
-  id: string;
+  id: number;
   topic: string;
   published_at: string;
   info: ReleaseInfo;
+  tag: string;
 };
 
 export type ReleaseInfo = {

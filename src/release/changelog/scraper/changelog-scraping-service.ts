@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Release, ScrapeSettingsTweetsChangelogs } from 'src/types/supabase-custom';
+import { Release, ScrapeSettingsChangelogs } from 'src/types/supabase-custom';
 import { ChangelogScraper, ParsedChangelog } from '../changelog.typedef';
 import { ChangelogSanitizer } from '../sanitizer/changelog-sanitizer';
 
@@ -10,7 +10,7 @@ export class ChangelogScrapingService {
     private changelogSanitizer: ChangelogSanitizer,
   ) {}
 
-  async scrape(scrapeSettings: ScrapeSettingsTweetsChangelogs, release: Release): Promise<ParsedChangelog | null> {
+  async scrape(scrapeSettings: ScrapeSettingsChangelogs, release: Release): Promise<ParsedChangelog | null> {
     const matchingStrategy = this.changelogScrapers.find((it) => it.strategy === scrapeSettings.strategy);
 
     const changelog = await matchingStrategy!.parseChangelog(scrapeSettings, release);
