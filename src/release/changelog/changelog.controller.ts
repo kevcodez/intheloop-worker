@@ -1,5 +1,5 @@
 import { InjectQueue } from '@nestjs/bullmq';
-import { Controller, Post, Query } from '@nestjs/common';
+import { Controller, Param, Post, Query } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { ChangelogJobScheduler } from './changelog-job-scheduler';
 import { ChangelogQueueData } from './changelog.typedef';
@@ -16,8 +16,8 @@ export class ChangelogController {
     await this.changelogJobScheduler.scrape();
   }
 
-  @Post()
-  async scrapeRelease(@Query('topic') topicId: string, @Query('release') releaseId: number) {
+  @Post(':topic')
+  async scrapeRelease(@Param('topic') topicId: string, @Query('release') releaseId: number) {
     await this.changelogQueue.add('changelog_job', {
       releaseId,
       topicId,

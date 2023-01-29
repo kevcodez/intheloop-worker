@@ -1,5 +1,5 @@
 import { InjectQueue } from '@nestjs/bullmq';
-import { Controller, Post, Query } from '@nestjs/common';
+import { Controller, Param, Post, Query } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { ReleaseJobScheduler } from './release-job-scheduler';
 import { ReleaseQueueData } from './release.typedef';
@@ -16,8 +16,8 @@ export class ReleaseController {
     await this.releaseJobScheduler.scrape();
   }
 
-  @Post()
-  async scrapeBlog(@Query('topic') topicId: string) {
+  @Post(':topic')
+  async scrapeBlog(@Param('topic') topicId: string) {
     await this.releaseQueue.add('release_job', {
       topicId,
     });

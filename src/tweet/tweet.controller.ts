@@ -1,5 +1,5 @@
 import { InjectQueue } from '@nestjs/bullmq';
-import { Controller, Post, Query } from '@nestjs/common';
+import { Controller, Param, Post, Query } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { TweetJobScheduler } from './tweet-job-scheduler';
 import { TweetQueueData } from './tweet.typedef';
@@ -16,8 +16,8 @@ export class TweetController {
     await this.tweetJobScheduler.scrape();
   }
 
-  @Post()
-  async scrapeTweet(@Query('topic') topicId: string) {
+  @Post(':topic')
+  async scrapeTweet(@Param('topic') topicId: string) {
     await this.tweetQueue.add('tweet_job', {
       topicId,
     });
